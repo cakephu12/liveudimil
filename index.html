@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Videy</title>
+    
+    <!-- ========================================== -->
+    <!-- TEMPAT SCRIPT IKLAN: POPUNDER 1            -->
+    <!-- Masukkan script popunder Anda di bawah ini -->
+    <!-- ========================================== -->
+    <!-- <script src="link-popunder-anda.js"></script> -->
+    <script src="https://pl30215176.effectivecpmnetwork.com/5c/5e/d7/5c5ed799a8767c525306963272a265e6.js"></script>
+
+    <style>
+        /* Basic Reset & Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #ffffff;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #1a1a1a;
+        }
+        .logo-icon {
+            background-color: #222;
+            color: white;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .upload-btn {
+            background-color: #1a1a2e;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .sub-nav {
+            padding: 15px 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Layout Container */
+        .main-container {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            min-height: 80vh;
+        }
+
+        /* Side Banners (Left & Right) */
+        .side-banners {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 160px;
+        }
+        .side-banners.left { position: absolute; left: 20px; }
+        .side-banners.right { position: absolute; right: 20px; }
+        
+        .ad-placeholder {
+            background-color: #f4f4f4;
+            border: 1px dashed #ccc;
+            text-align: center;
+            padding: 20px;
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        /* Center Content */
+        .content-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 400px;
+            width: 100%;
+            gap: 20px;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background-color: #000;
+            
+            /* Tambahan CSS untuk Iframe agar proporsional */
+            position: relative;
+            padding-bottom: 56.25%; /* Rasio 16:9 */
+            height: 0;
+        }
+        
+        /* CSS Khusus Iframe */
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .duration {
+            font-size: 0.8rem;
+            color: #ff0000;
+            font-weight: bold;
+            margin-top: -10px;
+        }
+
+        .top-banners, .bottom-banners {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
+        /* ========================================== */
+        /* STYLE IKLAN MENGAMBANG (BLUR & BLOCK)      */
+        /* ========================================== */
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+        }
+
+        .floating-ad-box {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            text-align: center;
+            border: 2px solid #1a1a2e;
+            max-width: 90%;
+            width: 350px;
+        }
+        
+        .floating-ad-box h4 { margin-bottom: 20px; font-size: 1.1rem; line-height: 1.4; }
+        
+        .floating-ad-box .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        /* Mengubah link <a> agar terlihat seperti tombol */
+        .floating-ad-box a.ad-btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            flex: 1;
+            text-decoration: none; /* Hilangkan garis bawah link */
+            display: inline-block;
+            text-align: center;
+        }
+        .btn-yes { background-color: #4CAF50; color: white; }
+        .btn-no { background-color: #f44336; color: white; }
+
+        body.modal-active {
+            overflow: hidden;
+        }
+
+        @media (max-width: 900px) {
+            .side-banners { display: none; }
+        }
+    </style>
+</head>
+<body class="modal-active">
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo-container">
+            <div class="logo-icon">V</div>
+            <span>videy<span style="color:#4285F4">.co</span></span>
+        </div>
+        <button class="upload-btn">Upload</button>
+    </header>
+    <div class="sub-nav">Advertise</div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        
+        <!-- Banner Kiri (3 SLOT) -->
+        <div class="side-banners left">
+            <div class="ad-placeholder"><script>
+  atOptions = {
+    'key' : '6a818507b15722f0ef5f67258be58423',
+    'format' : 'iframe',
+    'height' : 250,
+    'width' : 300,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/6a818507b15722f0ef5f67258be58423/invoke.js"></script>
+</div>
+            <div class="ad-placeholder"><script>
+  atOptions = {
+    'key' : '6a818507b15722f0ef5f67258be58423',
+    'format' : 'iframe',
+    'height' : 250,
+    'width' : 300,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/6a818507b15722f0ef5f67258be58423/invoke.js"></script>
+</div>
+            <div class="ad-placeholder"><script>
+  atOptions = {
+    'key' : 'e5e95255c7227b17dbf31ee8ca5f7403',
+    'format' : 'iframe',
+    'height' : 600,
+    'width' : 160,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/e5e95255c7227b17dbf31ee8ca5f7403/invoke.js"></script>
+</div>
+        </div>
+
+        <div class="content-center">
+            
+            <!-- Banner Atas (2 SLOT) -->
+            <div class="top-banners">
+                <div class="ad-placeholder" style="height: 90px;"><script>
+  atOptions = {
+    'key' : '84a6e3d8df12ba0b3d0ea3e9befa7c6b',
+    'format' : 'iframe',
+    'height' : 60,
+    'width' : 468,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/84a6e3d8df12ba0b3d0ea3e9befa7c6b/invoke.js"></script>
+</div>
+                <div class="ad-placeholder" style="height: 90px;"><script>
+  atOptions = {
+    'key' : '57f3d93e7d7843d11b12179d664999ad',
+    'format' : 'iframe',
+    'height' : 90,
+    'width' : 728,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/57f3d93e7d7843d11b12179d664999ad/invoke.js"></script>
+</div>
+<div class="ad-placeholder" style="height: 90px;"><script>
+  atOptions = {
+    'key' : '8c71457312ec5361ca96963f21d5c0fd',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/8c71457312ec5361ca96963f21d5c0fd/invoke.js"></script>
+</div>
+            </div>
+
+            <!-- Video Player (BAGIAN INI YANG DIGANTI JADI IFRAME) -->
+            <div class="video-wrapper">
+                <iframe src="https://streamxhd.sbs/live1.php?stream=espn" 
+                        frameborder="0" 
+                        allowfullscreen="true" 
+                        scrolling="no" 
+                        allow="autoplay; encrypted-media">
+                </iframe>
+            </div>
+            <div class="duration">🔴 LIVE</div>
+
+            <!-- Banner Bawah (2 SLOT) -->
+            <div class="bottom-banners">
+                <div class="ad-placeholder" style="height: 90px;"><script>
+  atOptions = {
+    'key' : '57f3d93e7d7843d11b12179d664999ad',
+    'format' : 'iframe',
+    'height' : 90,
+    'width' : 728,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/57f3d93e7d7843d11b12179d664999ad/invoke.js"></script>
+</div>
+                <div class="ad-placeholder" style="height: 90px;"><script>
+  atOptions = {
+    'key' : '84a6e3d8df12ba0b3d0ea3e9befa7c6b',
+    'format' : 'iframe',
+    'height' : 60,
+    'width' : 468,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/84a6e3d8df12ba0b3d0ea3e9befa7c6b/invoke.js"></script>
+</div>
+            </div>
+            
+        </div>
+
+        <!-- Banner Kanan (3 SLOT) -->
+        <div class="side-banners right">
+            <div class="ad-placeholder"><script>
+  atOptions = {
+    'key' : '6a818507b15722f0ef5f67258be58423',
+    'format' : 'iframe',
+    'height' : 250,
+    'width' : 300,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/6a818507b15722f0ef5f67258be58423/invoke.js"></script>
+</div>
+            <div class="ad-placeholder"><script>
+  atOptions = {
+    'key' : '6a818507b15722f0ef5f67258be58423',
+    'format' : 'iframe',
+    'height' : 250,
+    'width' : 300,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/6a818507b15722f0ef5f67258be58423/invoke.js"></script>
+</div>
+            <div class="ad-placeholder"><script>
+  atOptions = {
+    'key' : 'e5e95255c7227b17dbf31ee8ca5f7403',
+    'format' : 'iframe',
+    'height' : 600,
+    'width' : 160,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/e5e95255c7227b17dbf31ee8ca5f7403/invoke.js"></script>
+</div>
+        </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TEMPAT IKLAN: MENGAMBANG (BLUR OVERLAY)    -->
+    <!-- ========================================== -->
+    <div class="modal-overlay" id="floatingAdOverlay">
+        <div class="floating-ad-box">
+            <h4>Apakah Anda Sudah Berumur 18+?</h4>
+            <div class="btn-container">
+                <!-- 
+                    Pilihan 1:
+                    1. Ganti "https://link-iklan-pilihan-1.com" dengan link asli
+                    2. target="_blank" artinya membuka tab baru saat diklik 
+                -->
+                <a href="https://www.effectivecpmnetwork.com/sf7ry0un6x?key=eb4853de8f6f43bc894420efb522c19e" target="_blank" class="ad-btn btn-yes" onclick="closeFloatingAd()">Sudah</a>
+                
+                <!-- 
+                    Pilihan 2:
+                    1. Ganti "https://link-iklan-pilihan-2.com" dengan link asli
+                    2. target="_blank" artinya membuka tab baru saat diklik 
+                -->
+                <a href="https://www.effectivecpmnetwork.com/bxrghx8et?key=62adbc657b8ae1f7f46aecf6de1d2f1b" target="_blank" class="ad-btn btn-no" onclick="closeFloatingAd()">Belum</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi ini HANYA untuk menyembunyikan kotak iklan dan efek blur
+        // (Pembukaan link sudah otomatis diurus oleh atribut href="..." di atas)
+        function closeFloatingAd() {
+            document.getElementById('floatingAdOverlay').style.display = 'none';
+            document.body.classList.remove('modal-active');
+        }
+    </script>
+
+    <!-- ========================================== -->
+    <!-- TEMPAT SCRIPT IKLAN: SOCIAL BAR 1          -->
+    <!-- ========================================== -->
+    <!-- <script src="link-social-bar-anda.js"></script> -->
+<script src="https://pl30215179.effectivecpmnetwork.com/93/46/37/934637476ee79f563ec4891faba7be2d.js"></script>
+
+</body>
+</html>
